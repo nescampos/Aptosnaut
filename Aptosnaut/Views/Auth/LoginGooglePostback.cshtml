@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "LoginGooglePostback";
+}
+
+<h1>LoginGooglePostback</h1>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        const fragment = window.location.hash.substring(1);
+        const params = new URLSearchParams(fragment);
+        const token = params.get('id_token');
+
+        // Redirigir a una nueva URL con el token como parámetro de consulta
+        if (token) {
+          const newUrl = `${window.location.origin}/Auth/DeriveAccount?id_token=${token}`;
+          window.location.href = newUrl;
+        }
+    </script>
+}
