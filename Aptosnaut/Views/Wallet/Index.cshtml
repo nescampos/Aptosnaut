@@ -21,7 +21,19 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IsSpecial)
-        </dd
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AuthenticationKey)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AuthenticationKey)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SequenceNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SequenceNumber)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.APTAmount)
         </dt>
@@ -29,6 +41,31 @@
             @Html.DisplayFor(model => model.APTAmount)
         </dd>
     </dl>
+
+    <h3>Balances</h3>
+    <table>
+        @foreach(var balance in Model.Balances)
+        {
+            <tr>
+                <td>@balance.Name</td>
+                <td>@balance.Symbol</td>
+                <td>@balance.Amount</td>
+                <td>@balance.TokenStandard</td>
+                <td>@(balance.IsFrozen?"Yes":"No")</td>
+            </tr>
+        }
+    </table>
+
+    <h3>Resources</h3>
+    <table>
+        @foreach(var resource in Model.Resources)
+        {
+            <tr>
+                <td>@resource.Type</td>
+                <td>@resource.Data</td>
+            </tr>
+        }
+    </table>
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |

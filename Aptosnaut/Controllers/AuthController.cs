@@ -63,14 +63,25 @@ namespace Aptosnaut.Controllers
             var keylessAccount = await client.Keyless.DeriveAccount(id_token, ephemeralKeyPair);
             keylessAccounts.Add(userId, keylessAccount);
             HttpContext.Session.SetString("aptosnaut_token", id_token);
-            //AptosActions aptosActions = new AptosActions();
-            //GoogleAuthTokenSchema? googleSchema = aptosActions.GetValidToken(id_token);
-            //if(googleSchema == null)
-            //{
-
-            //}
             return RedirectToAction("Index", "Wallet");
 
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            try
+            {
+                string userId = HttpContext.Session.GetString("aptosnautUserId");
+                HttpContext.Session.Remove("aptosnautUserId");
+                ekpDict.Remove(userId);
+                keylessAccounts.Remove(userId);
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("Index");
         }
     }
 }

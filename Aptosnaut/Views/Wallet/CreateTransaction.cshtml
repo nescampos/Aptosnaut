@@ -1,0 +1,37 @@
+﻿@model Aptosnaut.Models.SendTransactionViewModel
+
+@{
+    ViewData["Title"] = "CreateTransaction";
+}
+
+<h1>Simulate Transaction</h1>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-4">
+            Address
+        </div>
+        <div class="col-4">
+            @Html.TextBoxFor(x => x.Form.Address) <br />
+            @Html.ValidationMessageFor(x => x.Form.Address)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            Amount
+        </div>
+        <div class="col-4">
+            @Html.TextBoxFor(x => x.Form.Amount, new { @type = "number" }) <br />
+            @Html.ValidationMessageFor(x => x.Form.Amount)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <br />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Simulate transaction" />
+        </div>
+    </div>
+}
