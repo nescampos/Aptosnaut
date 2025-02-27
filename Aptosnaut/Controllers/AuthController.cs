@@ -35,7 +35,8 @@ namespace Aptosnaut.Controllers
 
             var nonce = ephemeralKeyPair.Nonce;
             var clientId = _configuration["GoogleClientId"];
-            var redirectURI = "https://localhost:7067/Auth/LoginGooglePostback";
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var redirectURI = $"{baseUrl}/Auth/LoginGooglePostback";
 
             var queries = new Dictionary<string, string>();
             queries.Add("nonce", nonce);
@@ -72,7 +73,7 @@ namespace Aptosnaut.Controllers
 
         }
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult Logout()
         {
             try
@@ -86,7 +87,7 @@ namespace Aptosnaut.Controllers
             {
 
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
     }
 }

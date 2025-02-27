@@ -49,6 +49,7 @@
                                 @Html.ValidationMessageFor(x => x.Form.Address)
                             </div>
                         </div>
+                        <br />
                         <div class="row">
                             <div class="col-4">
                                 Coin/Token
@@ -67,6 +68,7 @@
                                 @Html.ValidationMessageFor(x => x.Form.Token)
                             </div>
                         </div>
+                        <br />
                         <div class="row">
                             <div class="col-4">
                                 Amount
@@ -79,12 +81,13 @@
                                 }
                                 else
                                 {
-                                    @Html.TextBoxFor(x => x.Form.Amount, new { @type = "number", @class = "form-control" })
+                                    @Html.TextBoxFor(x => x.Form.Amount, new { @class = "form-control" })
                                 }
                                 <br />
                                 @Html.ValidationMessageFor(x => x.Form.Amount)
                             </div>
                         </div>
+                        <br />
                         @if (Model.TotalFee.HasValue)
                         {
                             <div class="row">
@@ -98,14 +101,11 @@
                                 <br />
                             </div>
                             <div class="col-4">
-                                <input type="submit" value="Send transaction" />
+                                <input type="submit" class="button btn btn-success" value="Send transaction" />
                             </div>
                         </div>
                     }
                 </p>
-                <ul class="actions">
-                    <li><a href="@Url.Action("SendTransaction","Wallet")" class="btn btn-info">Send a new transaction</a></li>
-                </ul>
             </section>
 
         </div>

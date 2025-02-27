@@ -1,4 +1,4 @@
-﻿@model Aptos.TransactionResponse
+﻿@model Aptos.TransactionResponse?
 @{
     ViewData["Title"] = "Transaction with errors";
 }
@@ -24,7 +24,11 @@
             <div class="col-12">
                 <div class="alert alert-danger">
                     There was an error in the transaction. Please try again later. <br />
-                    Verify the transaction <a href="https://explorer.aptoslabs.com/txn/@Model.Hash?network=testnet">here</a>
+                    @if(Model != null)
+                    {
+                        <span>Verify the transaction <a href="https://explorer.aptoslabs.com/txn/@Model.Hash?network=testnet">here</a></span>
+                    }
+                    
                 </div>
             </div>
         </div>

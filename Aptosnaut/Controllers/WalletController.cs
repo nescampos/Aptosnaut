@@ -85,7 +85,7 @@ namespace Aptosnaut.Controllers
         //    return RedirectToAction("SendTransaction", new { address = Form.Address, amount = Form.Amount });
         //}
 
-        public async Task<IActionResult> SendTransaction(string? address, ulong? amount)
+        public async Task<IActionResult> SendTransaction(string? address, decimal? amount)
         {
             string userId = HttpContext.Session.GetString("aptosnautUserId");
             
@@ -130,33 +130,44 @@ namespace Aptosnaut.Controllers
                 return RedirectToAction("Login", "Auth");
             }
             var keylessAccount = keylessAccounts[userId];
+            var fungibleAssetsBalances = await client.FungibleAsset.GetAccountFungibleAssetBalances(keylessAccount.Address);
             if (!ModelState.IsValid)
             {
                 SendTransactionViewModel model = new SendTransactionViewModel();
-                var fungibleAssetsBalances = await client.FungibleAsset.GetAccountFungibleAssetBalances(keylessAccount.Address);
+                
                 model.Assets = fungibleAssetsBalances.Select(x => new SelectListItem { Text = x.Metadata.Name, Value = x.AssetType });
                 model.Form = Form;
                 return View(model);
             }
-            
+
+            var selectedAsset = fungibleAssetsBalances.FirstOrDefault(x => x.AssetType == Form.Token);
+            ulong realAmount = (ulong)(Form.Amount.GetValueOrDefault() * (decimal)Math.Pow(10, selectedAsset.Metadata.Decimals));
             var txn = await client.Transaction.Build(
                 sender: keylessAccount,
                 data: new GenerateEntryFunctionPayloadData(
                     function: "0x1::aptos_account::transfer_coins",
                     typeArguments: [Form.Token],
-                    functionArguments: [Form.Address, Form.Amount]
+                    functionArguments: [Form.Address, realAmount]
                 )
             );
-            var pendingTxn = await client.Transaction.SignAndSubmitTransaction(keylessAccount, txn);
-            var committedTxn = await client.Transaction.WaitForTransaction(pendingTxn.Hash);
-            if (committedTxn.Success)
+            try
             {
-                return RedirectToAction("TransactionSent", new { id = pendingTxn.Hash });
+                var pendingTxn = await client.Transaction.SignAndSubmitTransaction(keylessAccount, txn);
+                var committedTxn = await client.Transaction.WaitForTransaction(pendingTxn.Hash);
+                if (committedTxn.Success)
+                {
+                    return RedirectToAction("TransactionSent", new { id = pendingTxn.Hash });
+                }
+                else
+                {
+                    return RedirectToAction("TransactionError", new { id = pendingTxn.Hash });
+                }
             }
-            else
+            catch
             {
-                return RedirectToAction("TransactionError", new { id = pendingTxn.Hash });
+                return RedirectToAction("TransactionError");
             }
+            
         }
 
         public async Task<IActionResult> TransactionSent(string id)
@@ -165,8 +176,12 @@ namespace Aptosnaut.Controllers
             return View(txnResponse);
         }
 
-        public async Task<IActionResult> TransactionError(string id)
+        public async Task<IActionResult> TransactionError(string? id)
         {
+            if(id == null)
+            {
+                return View();
+            }
             TransactionResponse txnResponse = await client.Transaction.GetTransactionByHash(id);
             return View(txnResponse);
         }

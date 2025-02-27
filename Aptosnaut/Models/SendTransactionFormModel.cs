@@ -5,7 +5,7 @@ namespace Aptosnaut.Models
     public class SendTransactionFormModel
     {
         [Required]
-        public ulong? Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         [Required]
         public string? Address { get; set; }

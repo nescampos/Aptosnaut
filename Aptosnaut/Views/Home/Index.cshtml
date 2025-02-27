@@ -2,7 +2,22 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="wrapper">
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-8">
+                <h3>Aptosnaut</h3>
+
+                <p class="lead text-justify">
+                    <b>Aptosnaut</b> is a platform to manage your Aptos wallet without configuring complex keys.<br />
+                    With <b>Aptosnaut</b>, you can create and use an Aptos account with your Google account (more coming soon).
+                    You just need to login with your <a asp-area="" asp-controller="Auth" asp-action="Login">account</a>.
+                </p>
+            </div>
+            <div class="col-4">
+                <img src="~/css/images/hfiles_logo.JPG" alt="Aptosnaut" />
+            </div>
+        </div>
+    </div>
 </div>

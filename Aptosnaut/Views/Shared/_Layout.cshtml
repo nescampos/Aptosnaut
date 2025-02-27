@@ -24,7 +24,14 @@
                 <nav id="nav">
                     <ul>
                         <li><a asp-area="" asp-controller="Wallet" asp-action="SendTransaction">Create transaction</a></li>
-                        <li class="break"><a asp-area="" asp-controller="Auth" asp-action="Login">Login/Register</a></li>
+                        @if (Context.Session.GetString("aptosnautUserId") == null)
+                        {
+                            <li class="break"><a asp-area="" asp-controller="Auth" asp-action="Login">Login/Register</a></li>
+                        }
+                        else
+                        {
+                            <li class="break"><a asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                        }
                     </ul>
                 </nav>
 
