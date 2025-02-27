@@ -4,12 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OneOf.Types;
 using System;
+using System.Configuration;
 
 namespace Aptosnaut.Controllers
 {
     public class AuthController : BaseController
     {
-        
+        private IConfiguration _configuration;
+        public AuthController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public IActionResult Index()
         {
             return View();
@@ -29,7 +34,7 @@ namespace Aptosnaut.Controllers
             ekpDict.Add(userId, ephemeralKeyPair);
 
             var nonce = ephemeralKeyPair.Nonce;
-            var clientId = "62097542925-6ej2b7vo1t1klmlrdpmjvie4ok6ru501.apps.googleusercontent.com";
+            var clientId = _configuration["GoogleClientId"];
             var redirectURI = "https://localhost:7067/Auth/LoginGooglePostback";
 
             var queries = new Dictionary<string, string>();

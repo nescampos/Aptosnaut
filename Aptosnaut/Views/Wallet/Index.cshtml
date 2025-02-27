@@ -1,73 +1,132 @@
 ﻿@model Aptosnaut.Models.IndexWalletViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My wallet";
 }
 
-<h1>Index</h1>
+@section HeaderSection
+{
+    <section id="hero" class="container">
+        <header>
+            <h2>
+                @ViewData["Title"]
+            </h2>
+        </header>
+        <p>
+            Check all your wallet data, and balances, and interact with it
+        </p>
+        <ul class="actions">
+            <li><a href="@Url.Action("SendTransaction","Wallet")" class="button btn btn-primary">Send a new transaction</a></li>
+        </ul>
+    </section>
+}
 
-<div>
-    <h4>IndexWalletViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsSpecial)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsSpecial)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AuthenticationKey)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AuthenticationKey)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SequenceNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SequenceNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.APTAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.APTAmount)
-        </dd>
-    </dl>
 
-    <h3>Balances</h3>
-    <table>
-        @foreach(var balance in Model.Balances)
-        {
-            <tr>
-                <td>@balance.Name</td>
-                <td>@balance.Symbol</td>
-                <td>@balance.Amount</td>
-                <td>@balance.TokenStandard</td>
-                <td>@(balance.IsFrozen?"Yes":"No")</td>
-            </tr>
-        }
-    </table>
+<div class="wrapper">
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-2">
+                <br />
+            </div>
+            <section class="col-8 col-12-narrower">
+                <header>
+                    <h2>Wallet info</h2>
+                </header>
+                <p>
+                    APT Balance : <b>@Model.APTAmount</b> <br />
+                    Address : <b>@Model.Address</b> <br />
+                    Is Special : <b>@(Model.IsSpecial? "Yes":"No")</b> <br />
+                    Authentication Key : <b>@Model.AuthenticationKey</b> <br />
+                    Sequence Number : <b>@Model.SequenceNumber </b>
+                </p>
+                <ul class="actions">
+                    <li><a href="@Url.Action("SendTransaction","Wallet")" class="btn btn-info">Send a new transaction</a></li>
+                </ul>
+            </section>
+            <div class="col-2">
+                <br />
+            </div>
+        </div> 
+        <br />
+        <div class="row">
+            <section class="col-12 col-12-narrower text-center">
+                <header>
+                    <h2>Balances</h2>
+                </header>
+                <p>
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
 
-    <h3>Resources</h3>
-    <table>
-        @foreach(var resource in Model.Resources)
-        {
-            <tr>
-                <td>@resource.Type</td>
-                <td>@resource.Data</td>
-            </tr>
-        }
-    </table>
+                                <th>Name</th>
+                                <th>Symbol</th>
+                                <th>Amount</th>
+                                <th>Token standard</th>
+                                <th>Is frozen?</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var balance in Model.Balances)
+                            {
+                                <tr>
+                                    <td>
+                                        @if(!string.IsNullOrEmpty(balance.Icon))
+                                        {
+                                            <img src="@balance.Icon" alt="@balance.Name" />
+                                        }
+                                        <span>@balance.Name</span>
+                                    </td>
+                                    <td>@balance.Symbol</td>
+                                    <td>@balance.Amount</td>
+                                    <td>@balance.TokenStandard</td>
+                                    <td>@(balance.IsFrozen ? "Yes" : "No")</td>
+                                    <td><a href="https://aptoscan.com/coin/@(balance.AssetType)" target="_blank">Details</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </p>
+                <ul class="actions">
+                    <li><a href="@Url.Action("SendTransaction","Wallet")" class="btn btn-info">Send a new transaction</a></li>
+                </ul>
+            </section>
+
+        </div>
+        <br />
+        <div class="row">
+            <section class="col-12 col-12-narrower text-center">
+                <header>
+                    <h2>My Resources</h2>
+                </header>
+                <p>
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var resource in Model.Resources)
+                            {
+                                <tr>
+                                    <td>@resource.Type</td>
+                                    <td><pretty-json>@resource.Data</pretty-json></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </p>
+            </section>
+
+        </div>
+        <br />
+    </div>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    <script defer src="https://unpkg.com/pretty-json-custom-element/index.js"></script>
+
+
+}

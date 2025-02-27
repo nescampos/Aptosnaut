@@ -1,9 +1,31 @@
 ﻿@model Aptos.TransactionResponse
 @{
-    ViewData["Title"] = "TransactionSent";
+    ViewData["Title"] = "Successful transaction";
 }
 
-<h1>Transaction Sent</h1>
+@section HeaderSection
+{
+    <section id="hero" class="container">
+        <header>
+            <h2>
+                @ViewData["Title"]
+            </h2>
+        </header>
+        <p>
+            Your transaction has been executed successfully
+        </p>
+    </section>
+}
 
-
-Verify the transaction <a href="https://explorer.aptoslabs.com/txn/@Model.Hash?network=testnet">here</a>
+<div class="wrapper">
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger">
+                    The money transfer transaction was executed successfully <br />
+                    Verify the transaction <a href="https://explorer.aptoslabs.com/txn/@Model.Hash?network=testnet">here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

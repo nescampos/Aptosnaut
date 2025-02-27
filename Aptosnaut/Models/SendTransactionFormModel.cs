@@ -9,5 +9,8 @@ namespace Aptosnaut.Models
 
         [Required]
         public string? Address { get; set; }
+
+        [Required]
+        public string? Token { get; set; }
     }
 }

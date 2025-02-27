@@ -1,62 +1,117 @@
 ﻿@model Aptosnaut.Models.SendTransactionViewModel
 @{
-    ViewData["Title"] = "SendTransaction";
+    ViewData["Title"] = "Send a new transaction";
 }
 
-<h1>Send Transaction</h1>
-
-@using(Html.BeginForm())
+@section HeaderSection
 {
-    <div class="row">
-        <div class="col-4">
-            Address
-        </div>
-        <div class="col-4">
-            @if(Model.Form.Address != null)
-            {
-                @Model.Form.Address
-                <input type="hidden" name="Form.Address" value="@Model.Form.Address" />
-            }
-            else
-            {
-                @Html.TextBoxFor(x => x.Form.Address)
-            }
-            <br />
-            @Html.ValidationMessageFor(x => x.Form.Address)
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            Amount
-        </div>
-        <div class="col-4">
-            @if (Model.Form.Amount != null)
-            {
-                @Model.Form.Amount
-                <input type="hidden" name="Form.Amount" value="@Model.Form.Amount" />
-            }
-            else
-            {
-                @Html.TextBoxFor(x => x.Form.Amount, new { @type = "number" })
-            }
-            <br />
-            @Html.ValidationMessageFor(x => x.Form.Amount)
-        </div>
-    </div>
-    @if (Model.TotalFee.HasValue)
-    {
-        <div class="row">
-            <div class="col-12">
-                The total fee for this transaction is @Model.TotalFee
-            </div>
-        </div>
-    }
-    <div class="row">
-        <div class="col-4">
-            <br />
-        </div>
-        <div class="col-4">
-            <input type="submit" value="Send transaction" />
-        </div>
-    </div>
+    <section id="hero" class="container">
+        <header>
+            <h2>
+                @ViewData["Title"]
+            </h2>
+        </header>
+        <p>
+            Send money available in your balance to another account
+        </p>
+        <ul class="actions">
+            <li><a href="@Url.Action("Index","Wallet")" class="button btn btn-primary">Check wallet</a></li>
+        </ul>
+    </section>
 }
+
+
+<div class="wrapper">
+    <div class="container" id="main">
+        <div class="row">
+            <section class="col-12 col-12-narrower text-center">
+                <header>
+                    <h2>Enter the information for the transaction</h2>
+                </header>
+                <p>
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row">
+                            <div class="col-4">
+                                Address
+                            </div>
+                            <div class="col-4">
+                                @if (Model.Form.Address != null)
+                                {
+                                    @Model.Form.Address
+                                    <input type="hidden" name="Form.Address" value="@Model.Form.Address" />
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.Form.Address, new { @class = "form-control" })
+                                }
+                                <br />
+                                @Html.ValidationMessageFor(x => x.Form.Address)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                Coin/Token
+                            </div>
+                            <div class="col-4">
+                                @if (Model.Form.Token != null)
+                                {
+                                    @Model.Form.Token
+                                    <input type="hidden" name="Form.Token" value="@Model.Form.Token" />
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.Form.Token, Model.Assets, "Select a coin/token", new { @class = "form-control" })
+                                }
+                                <br />
+                                @Html.ValidationMessageFor(x => x.Form.Token)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                Amount
+                            </div>
+                            <div class="col-4">
+                                @if (Model.Form.Amount != null)
+                                {
+                                    @Model.Form.Amount
+                                    <input type="hidden" name="Form.Amount" value="@Model.Form.Amount" />
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.Form.Amount, new { @type = "number", @class = "form-control" })
+                                }
+                                <br />
+                                @Html.ValidationMessageFor(x => x.Form.Amount)
+                            </div>
+                        </div>
+                        @if (Model.TotalFee.HasValue)
+                        {
+                            <div class="row">
+                                <div class="col-12">
+                                    The total fee for this transaction is @Model.TotalFee
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-4">
+                                <br />
+                            </div>
+                            <div class="col-4">
+                                <input type="submit" value="Send transaction" />
+                            </div>
+                        </div>
+                    }
+                </p>
+                <ul class="actions">
+                    <li><a href="@Url.Action("SendTransaction","Wallet")" class="btn btn-info">Send a new transaction</a></li>
+                </ul>
+            </section>
+
+        </div>
+        <br />
+        
+    </div>
+</div>
+
+

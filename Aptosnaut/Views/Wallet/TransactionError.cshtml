@@ -1,9 +1,32 @@
 ﻿@model Aptos.TransactionResponse
 @{
-    ViewData["Title"] = "TransactionSent";
+    ViewData["Title"] = "Transaction with errors";
 }
 
-<h1>Transaction with errors</h1>
 
+@section HeaderSection
+{
+    <section id="hero" class="container">
+        <header>
+            <h2>
+                @ViewData["Title"]
+            </h2>
+        </header>
+        <p>
+            There was an error in the transaction.
+        </p>
+    </section>
+}
 
-Verify the transaction <a href="https://explorer.aptoslabs.com/txn/@Model.Hash?network=testnet">here</a>
+<div class="wrapper">
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger">
+                    There was an error in the transaction. Please try again later. <br />
+                    Verify the transaction <a href="https://explorer.aptoslabs.com/txn/@Model.Hash?network=testnet">here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
